@@ -34,3 +34,5 @@ I understand the code and continue improving it step by step.
 Beginner project – improving gradually.
 
 “This project helped me understand how to structure a Python program using functions, loops, and validation. I plan to revisit it later to improve it further.”
+
+Next steps (future): refactor further, add menu, read words from file.
