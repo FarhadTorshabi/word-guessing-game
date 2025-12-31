@@ -51,61 +51,74 @@ def update_display(word, display, guess):
 # -----------------------------
 # Play One Round
 # -----------------------------
-def play_round():
-    word, attempts = choose_difficulty()
-    guessed_letters = []
-    display = ["_"] * len(word)
+def play_round(game_state):
+
+    game_state["secret_word"], game_state["attempts_left"] = choose_difficulty()
+    
+    display = ["_"] * len(game_state["secret_word"])
 
     print("\n🎯 New Game Started!")
     print("Word:", " ".join(display))
 
-    while attempts > 0 and "_" in display:
-        print("\nGuessed letters:", ", ".join(guessed_letters))
-        print("Attempts left:", attempts)
+    while game_state["attempts_left"] > 0 and "_" in display:
+        print("\nGuessed letters:", ", ".join(game_state["guessed_letters"]))
+        print("Attempts left:", game_state["attempts_left"])
 
-        guess = get_valid_guess(guessed_letters)
-        guessed_letters.append(guess)
+        guess = get_valid_guess(game_state["guessed_letters"])
+        game_state["guessed_letters"].append(guess)
 
         # Full word guess
         if len(guess) > 1:
-            if guess == word:
-                return True, word
+            if guess == game_state["secret_word"]:
+                return True, game_state["secret_word"]
             else:
-                attempts -= 1
+                game_state["attempts_left"] -= 1
                 print("❌ Wrong word!")
                 continue
 
         # Single letter guess
-        if guess in word:
-            update_display(word, display, guess)
+        if guess in game_state["secret_word"]:
+            update_display(game_state["secret_word"], display, guess)
             print("✅ Correct!")
         else:
-            attempts -= 1
+            game_state["attempts_left"] -= 1
             print("❌ Wrong letter!")
 
         print("Word:", " ".join(display))
 
-    return "_" not in display, word
+    if "_" not in display:
+        game_state["status"] = "won"
+    else:
+        game_state["status"] = "lost"
+
+    # return game_state["status"], game_state["secret_word"]
 
 
 # -----------------------------
 # Main Application Loop
 # -----------------------------
 def guess_word():
+
+    game_state = {
+        "secret_word": "python",
+        "guessed_letters": [],
+        "attempts_left": 5,
+        "status": "playing"
+    }
     wins = 0
     losses = 0
 
     print("🎮 Welcome to the Word Guessing Game!")
 
     while True:
-        won, word = play_round()
+        play_round(game_state)
 
-        if won:
+        if game_state["status"] == "won":
             wins += 1
-            print("\n🎉 You won! The word was:", word)
-        else:
+            print("\n🎉 You won! The word was:", game_state["secret_word"])
+        elif game_state["status"] == "lost":
             losses += 1
-            print("\n💀 You lost! The word was:", word)
+            print("\n💀 You lost! The word was:", game_state["secret_word"])
 
         print(f"\n📊 Score → Wins: {wins} | Losses: {losses}")
 
