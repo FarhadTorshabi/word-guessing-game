@@ -74,6 +74,21 @@ def update_game_status(game_state, display):
         game_state["status"] = "lost"
 
 # -----------------------------
+# User Requests a Hint
+# -----------------------------
+def get_hint_letter(secret_word, guessed_letters):
+    hidden_letters = list()
+    
+    for letter in secret_word:
+        if letter not in guessed_letters:
+            hidden_letters.append(letter)
+    
+    if not hidden_letters:
+        return None
+    
+    return random.choice(hidden_letters)
+
+# -----------------------------
 # Play One Round
 # -----------------------------
 def play_round(game_state):
@@ -96,6 +111,28 @@ def play_round(game_state):
         print("Attempts left:", game_state["attempts_left"])
 
         guess = get_valid_guess(game_state["guessed_letters"])
+        
+        # Hint request
+        if guess == "hint":
+            hint_letter = get_hint_letter(game_state["secret_word"], game_state["guessed_letters"])
+            if hint_letter is None:
+                print("ℹ️ No hints available.")
+                continue
+            
+            game_state["guessed_letters"].append(hint_letter)
+            update_display(game_state["secret_word"], display, hint_letter)
+            game_state["attempts_left"] -= 1
+
+            print(f"💡 Hint used! Letter revealed: {hint_letter}")
+            print("Word:", " ".join(display))
+
+            # ✅ FIX: check for win immediately
+            if "_" not in display:
+                game_state["status"] = "won"
+                break
+            
+            continue
+
         game_state["guessed_letters"].append(guess)
 
         # Full word guess
