@@ -1,37 +1,30 @@
-# Word Guessing Game (Python)
+Project Description
+Word Guessing Game 🧠🎮
 
-This is a simple word guessing game written in Python.
-It was created as part of my Python learning journey (Day 8).
+A simple command-line word guessing game written in Python.
+The player chooses a difficulty level and tries to guess the secret word
+by guessing letters or the whole word within a limited number of attempts.
 
-## 🎯 How the game works
-- The computer randomly selects a word from a list
-- The player guesses one letter at a time
-- Correct letters are revealed
-- The player has 6 attempts to guess the word
-- The game can be replayed multiple times
 
-## 🧠 What I practiced
-- Strings and string methods
-- Loops and conditionals
-- Lists
-- Input validation
-- Game logic and state
+Features
+- Three difficulty levels (easy, medium, hard)
+- Letter-by-letter and full-word guessing
+- Attempt tracking and win/loss status
+- Clean game state management
+- Simple and friendly user interface
 
-## ▶️ How to run
-1. Make sure Python is installed
-2. Run the file:
-   ```bash
-   python guess_word.py
-  
-🤝 Note
+What I Learned
+- Python fundamentals (loops, functions, dictionaries, lists)
+- Managing game state and program flow
+- Refactoring code step by step
+- Using Git and commits to track progress
+- Building confidence through practice
 
-This project was developed while learning Python, with guidance and explanations from ChatGPT.
-I understand the code and continue improving it step by step.
-
-📌 Status
-
-Beginner project – improving gradually.
-
-“This project helped me understand how to structure a Python program using functions, loops, and validation. I plan to revisit it later to improve it further.”
-
-Next steps (future): refactor further, add menu, read words from file.
+How to Run
+1. Make sure Python 3 is installed
+2. Run the game with:
+   python guess-word.py
+   
+Note
+This project was developed while learning Python step by step,
+focusing on understanding, refactoring, and clean code practices.
