@@ -109,6 +109,7 @@ def play_round(game_state):
 
         # Single letter guess
         if apply_guess(game_state, guess):
+             update_display(game_state["secret_word"], display, guess)
              print("✅ Correct!")
         else:
             print("❌ Wrong letter!")
