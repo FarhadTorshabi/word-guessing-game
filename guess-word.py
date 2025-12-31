@@ -55,12 +55,22 @@ def reset_round_state(game_state):
     game_state["status"] = "playing"
 
 # -----------------------------
+# Apply Guess
+# -----------------------------
+def apply_guess(game_state, guess):
+    if guess in game_state["secret_word"]:
+        return True
+    else:
+        game_state["attempts_left"] -= 1
+        return False
+
+# -----------------------------
 # Play One Round
 # -----------------------------
 def play_round(game_state):
 
     reset_round_state(game_state)
-    
+
     game_state["secret_word"], game_state["attempts_left"] = choose_difficulty()
     
     display = ["_"] * len(game_state["secret_word"])
@@ -85,11 +95,9 @@ def play_round(game_state):
                 continue
 
         # Single letter guess
-        if guess in game_state["secret_word"]:
-            update_display(game_state["secret_word"], display, guess)
-            print("✅ Correct!")
+        if apply_guess(game_state, guess):
+             print("✅ Correct!")
         else:
-            game_state["attempts_left"] -= 1
             print("❌ Wrong letter!")
 
         print("Word:", " ".join(display))
