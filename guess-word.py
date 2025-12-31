@@ -47,12 +47,20 @@ def update_display(word, display, guess):
         if word[i] == guess:
             display[i] = guess
 
+# -----------------------------
+# Reset Game State
+# -----------------------------
+def reset_round_state(game_state):
+    game_state["guessed_letters"] = []
+    game_state["status"] = "playing"
 
 # -----------------------------
 # Play One Round
 # -----------------------------
 def play_round(game_state):
 
+    reset_round_state(game_state)
+    
     game_state["secret_word"], game_state["attempts_left"] = choose_difficulty()
     
     display = ["_"] * len(game_state["secret_word"])
