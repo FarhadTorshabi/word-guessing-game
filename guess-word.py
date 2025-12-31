@@ -65,6 +65,15 @@ def apply_guess(game_state, guess):
         return False
 
 # -----------------------------
+# Update Game Status
+# -----------------------------
+def update_game_status(game_state, display):
+    if "_" not in display:
+        game_state["status"] = "won"
+    elif game_state["attempts_left"] == 0:
+        game_state["status"] = "lost"
+
+# -----------------------------
 # Play One Round
 # -----------------------------
 def play_round(game_state):
@@ -78,7 +87,7 @@ def play_round(game_state):
     print("\n🎯 New Game Started!")
     print("Word:", " ".join(display))
 
-    while game_state["attempts_left"] > 0 and "_" in display:
+    while game_state["status"] == "playing":
         print("\nGuessed letters:", ", ".join(game_state["guessed_letters"]))
         print("Attempts left:", game_state["attempts_left"])
 
@@ -102,13 +111,7 @@ def play_round(game_state):
 
         print("Word:", " ".join(display))
 
-    if "_" not in display:
-        game_state["status"] = "won"
-    else:
-        game_state["status"] = "lost"
-
-    # return game_state["status"], game_state["secret_word"]
-
+        update_game_status(game_state, display)
 
 # -----------------------------
 # Main Application Loop
