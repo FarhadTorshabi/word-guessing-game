@@ -88,7 +88,11 @@ def play_round(game_state):
     print("Word:", " ".join(display))
 
     while game_state["status"] == "playing":
-        print("\nGuessed letters:", ", ".join(game_state["guessed_letters"]))
+        if game_state["guessed_letters"]:
+            print("\nGuessed letters:", ", ".join(game_state["guessed_letters"]))
+        else:
+            print("\nGuessed letters: none")
+        
         print("Attempts left:", game_state["attempts_left"])
 
         guess = get_valid_guess(game_state["guessed_letters"])
@@ -128,16 +132,18 @@ def guess_word():
     losses = 0
 
     print("🎮 Welcome to the Word Guessing Game!")
+    print("Guess letters one by one, or try to guess the whole word.")
+    print("Be careful — wrong guesses cost attempts!\n")
 
     while True:
         play_round(game_state)
 
         if game_state["status"] == "won":
             wins += 1
-            print("\n🎉 You won! The word was:", game_state["secret_word"])
+            print(f"\n🎉 You won! The word was '{game_state['secret_word']}'.")
         elif game_state["status"] == "lost":
             losses += 1
-            print("\n💀 You lost! The word was:", game_state["secret_word"])
+            print(f"\n💀 You lost. The word was '{game_state['secret_word']}'.")
 
         print(f"\n📊 Score → Wins: {wins} | Losses: {losses}")
 
