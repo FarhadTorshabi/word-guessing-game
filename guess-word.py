@@ -1,6 +1,35 @@
 import random
 
 # -----------------------------
+# Load Scoreboard from File
+# -----------------------------
+def load_scoreboard(filename="scoreboard.txt"):
+    wins = 0
+    losses = 0
+
+    try:
+        with open(filename, "r") as file:
+            for line in file:
+                key, value = line.strip().split("=")
+                if key == "wins":
+                    wins = int(value)
+                elif key == "losses":
+                    losses = int(value)
+    except FileNotFoundError:
+        # First run: file does not exist yet
+        pass
+
+    return wins, losses
+
+# -----------------------------
+# Save Scoreboard to File
+# -----------------------------
+def save_scoreboard(wins, losses, filename="scoreboard.txt"):
+    with open(filename, "w") as file:
+        file.write(f"wins={wins}\n")
+        file.write(f"losses={losses}\n")
+    
+# -----------------------------
 # Difficulty & Word Selection
 # -----------------------------
 def choose_difficulty():
@@ -55,7 +84,8 @@ def reset_round_state(game_state):
     game_state["status"] = "playing"
 
 # -----------------------------
-# Is Guess Correct
+# Check if a guessed letter exists in the secret word
+# (Pure function: no side effects)
 # -----------------------------
 def is_correct_guess(secret_word, guess):
     return guess in secret_word
@@ -185,8 +215,8 @@ def guess_word():
         "hints_left": 0,
         "status": "playing"
     }
-    wins = 0
-    losses = 0
+
+    wins, losses = load_scoreboard()
 
     print("🎮 Welcome to the Word Guessing Game!")
     print("Guess letters one by one, or try to guess the whole word.")
@@ -201,7 +231,7 @@ def guess_word():
         elif game_state["status"] == "lost":
             losses += 1
             print(f"\n💀 You lost. The word was '{game_state['secret_word']}'.")
-
+        save_scoreboard(wins, losses)
         print(f"\n📊 Score → Wins: {wins} | Losses: {losses}")
 
         play_again = input("\nPlay again? (y/n): ").lower()
