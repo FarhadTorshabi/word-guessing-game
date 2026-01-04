@@ -1,30 +1,110 @@
-Project Description
-Word Guessing Game 🧠🎮
+🎮 Word Guessing Game (Python)
 
-A simple command-line word guessing game written in Python.
-The player chooses a difficulty level and tries to guess the secret word
-by guessing letters or the whole word within a limited number of attempts.
+A console-based word guessing game developed while learning Python fundamentals, focusing on clean design, incremental refactoring, and version control best practices.
+
+📌 Features
+
+Three difficulty levels: Easy / Medium / Hard
+
+Guess letters or the entire word
+
+Limited hint system based on difficulty
+
+Attempts decrease on wrong guesses and hint usage
+
+Persistent scoreboard saved to a file
+
+Clear game status handling (win / lose)
+
+Designed step-by-step with meaningful commits
+
+🕹️ How to Play
+
+Run the game:
+
+python guess-word.py
 
 
-Features
-- Three difficulty levels (easy, medium, hard)
-- Letter-by-letter and full-word guessing
-- Attempt tracking and win/loss status
-- Clean game state management
-- Simple and friendly user interface
+Choose a difficulty:
 
-What I Learned
-- Python fundamentals (loops, functions, dictionaries, lists)
-- Managing game state and program flow
-- Refactoring code step by step
-- Using Git and commits to track progress
-- Building confidence through practice
+Easy → more attempts, more hints
 
-How to Run
-1. Make sure Python 3 is installed
-2. Run the game with:
-   python guess-word.py
-   
-Note
-This project was developed while learning Python step by step,
-focusing on understanding, refactoring, and clean code practices.
+Medium → balanced
+
+Hard → fewer attempts, no hints
+
+Enter:
+
+A single letter (e.g. a)
+
+Or the full word (e.g. python)
+
+Or type hint (if available)
+
+The game ends when:
+
+All letters are revealed (Win)
+
+Attempts reach zero (Loss)
+
+💡 Hint System
+Difficulty	Attempts	Hints
+Easy	6	2
+Medium	5	1
+Hard	4	0
+
+Using a hint:
+
+Reveals one hidden letter
+
+Costs 1 attempt
+
+Hints cannot be used if:
+
+No hints remain
+
+No hidden letters remain
+
+📊 Scoreboard
+
+Wins and losses are saved to scoreboard.txt
+
+Scores persist between game runs
+
+Example file content:
+
+wins=3
+losses=2
+
+🧠 Learning Goals Behind This Project
+
+This project was intentionally built to practice:
+
+Functions & dictionaries
+
+Game state management
+
+Input validation
+
+Incremental refactoring
+
+Bug fixing through reasoning
+
+Git commits with meaningful history
+
+Designing rules instead of patching bugs
+
+🛠️ Future Improvements
+
+Refactor using classes (OOP)
+
+Add timer or streak bonuses
+
+Improve UI (colors / formatting)
+
+Add test cases
+
+🤝 Note
+
+This project was developed while learning Python, with guidance and explanations from ChatGPT.
+The focus was not just making it work, but understanding why it works.
