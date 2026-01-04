@@ -55,15 +55,11 @@ def reset_round_state(game_state):
     game_state["status"] = "playing"
 
 # -----------------------------
-# Apply Guess
+# Is Guess Correct
 # -----------------------------
-def apply_guess(game_state, guess):
-    if guess in game_state["secret_word"]:
-        return True
-    else:
-        game_state["attempts_left"] -= 1
-        return False
-
+def is_correct_guess(secret_word, guess):
+    return guess in secret_word
+        
 # -----------------------------
 # Update Game Status
 # -----------------------------
@@ -97,6 +93,13 @@ def play_round(game_state):
 
     game_state["secret_word"], game_state["attempts_left"] = choose_difficulty()
     
+    if game_state["attempts_left"] == 6:      # easy
+        game_state["hints_left"] = 2
+    elif game_state["attempts_left"] == 5:    # medium
+        game_state["hints_left"] = 1
+    else:                                     # hard
+        game_state["hints_left"] = 0
+
     display = ["_"] * len(game_state["secret_word"])
 
     print("\n🎯 New Game Started!")
@@ -114,6 +117,9 @@ def play_round(game_state):
         
         # Hint request
         if guess == "hint":
+            if game_state["hints_left"] == 0:
+                print("ℹ️ No hints left.")
+                continue
             hint_letter = get_hint_letter(game_state["secret_word"], game_state["guessed_letters"])
             if hint_letter is None:
                 print("ℹ️ No hints available.")
@@ -121,16 +127,18 @@ def play_round(game_state):
             
             game_state["guessed_letters"].append(hint_letter)
             update_display(game_state["secret_word"], display, hint_letter)
-            game_state["attempts_left"] -= 1
 
             print(f"💡 Hint used! Letter revealed: {hint_letter}")
+            game_state["hints_left"] -= 1
             print("Word:", " ".join(display))
 
-            # ✅ FIX: check for win immediately
-            if "_" not in display:
-                game_state["status"] = "won"
+            game_state["attempts_left"] -= 1
+            if game_state["attempts_left"] <= 0:
+                game_state["status"] = "lost"
                 break
-            
+
+            # ✅ FIX: check for win or lose immediately
+            update_game_status(game_state, display)
             continue
 
         game_state["guessed_letters"].append(guess)
@@ -138,18 +146,28 @@ def play_round(game_state):
         # Full word guess
         if len(guess) > 1:
             if guess == game_state["secret_word"]:
-                return True, game_state["secret_word"]
+                print("✅ Correct!")
+                display = list(game_state["secret_word"])
+                update_game_status(game_state, display)
+                continue
             else:
                 game_state["attempts_left"] -= 1
                 print("❌ Wrong word!")
-                continue
-
+            
+                if game_state["attempts_left"] <= 0:
+                    game_state["status"] = "lost"
+                    break
+              
         # Single letter guess
-        if apply_guess(game_state, guess):
+        if is_correct_guess(game_state["secret_word"], guess):
              update_display(game_state["secret_word"], display, guess)
              print("✅ Correct!")
         else:
             print("❌ Wrong letter!")
+            game_state["attempts_left"] -= 1
+            if game_state["attempts_left"] <= 0:
+                game_state["status"] = "lost"
+                break
 
         print("Word:", " ".join(display))
 
@@ -164,6 +182,7 @@ def guess_word():
         "secret_word": "python",
         "guessed_letters": [],
         "attempts_left": 5,
+        "hints_left": 0,
         "status": "playing"
     }
     wins = 0
